@@ -6,8 +6,13 @@ const Title = styled.h1`
   font-size: 5rem;
 `;
 
+const Subtitle = styled.h2`
+  color: #e5dcc5;
+`;
+
 export const Header = () => (
   <header>
     <Title>Quizizz Parser</Title>
+    <Subtitle>An app where you can get answers for your quiz!</Subtitle>
   </header>
 );
