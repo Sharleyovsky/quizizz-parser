@@ -13,7 +13,6 @@ export const getAnswersFile = async (id: string): Promise<boolean> => {
     const file = new Blob([answersBlob.data], { type: "application/pdf" });
 
     await saveAs(file, fileName);
-
     return true;
   } catch {
     return false;
