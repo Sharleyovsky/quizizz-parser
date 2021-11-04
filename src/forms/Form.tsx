@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { getAnswersFile } from "../functions/getAnswersFile";
+import { ClipLoader } from "react-spinners";
 
 const AnswerForm = styled.form`
   display: flex;
@@ -7,11 +10,11 @@ const AnswerForm = styled.form`
 `;
 
 const Input = styled.input`
-  background: #848FA5;
+  background: #848fa5;
   width: 100%;
   padding: 2rem;
   color: #e5dcc5;
-  border: solid #848FA5;
+  border: solid #848fa5;
   border-radius: 25px 0px 0px 25px;
   text-align: center;
   font-size: 18px;
@@ -31,7 +34,7 @@ const Input = styled.input`
 const Button = styled.button`
   outline: none;
   color: #e5dcc5;
-  background: #C14953;
+  background: #c14953;
   padding: 0.5em 0.75em;
   border: none;
   border-radius: 0px 25px 25px 0px;
@@ -39,15 +42,34 @@ const Button = styled.button`
   font-weight: bold;
   cursor: pointer;
   &:focus {
-   outline: none;
+    outline: none;
   }
 `;
 
+type Inputs = {
+  id: string;
+};
+
 export const Form = () => {
+  const [loading, setLoading] = useState(false);
+
+  const { register, handleSubmit } = useForm();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const id = data.id.split("/quiz/")[1].split("/start")[0];
+    setLoading(true);
+    await getAnswersFile(id, setLoading);
+  };
+
   return (
-    <AnswerForm>
-      <Input type="text" placeholder="Paste the link for the quiz" />
-      <Button>Get Answers</Button>
+    <AnswerForm onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        type="text"
+        placeholder="Paste the link for the quiz"
+        {...register("id", { required: true })}
+      />
+      <Button>
+        {loading ? <ClipLoader color={"#e5dcc5"} /> : "Get Answers"}
+      </Button>
     </AnswerForm>
   );
 };
