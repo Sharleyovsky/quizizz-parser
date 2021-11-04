@@ -1,9 +1,14 @@
 import axios from "axios";
+import { saveAs } from "file-saver";
+import React from "react";
 
-export const getAnswersFile = async (id: string): Promise<boolean> => {
+export const getAnswersFile = async (
+  id: string,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   try {
     const answersBlob = await axios.post(
-      `${process.env.API_URL}/getAnswers`,
+      `/answers`,
       {
         id,
       },
@@ -13,8 +18,9 @@ export const getAnswersFile = async (id: string): Promise<boolean> => {
     const file = new Blob([answersBlob.data], { type: "application/pdf" });
 
     await saveAs(file, fileName);
-    return true;
-  } catch {
-    return false;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
   }
 };
