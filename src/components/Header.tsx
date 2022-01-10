@@ -13,6 +13,6 @@ const Subtitle = styled.h2`
 export const Header = () => (
   <header>
     <Title>Quizizz Parser</Title>
-    <Subtitle>An app where you can get answers for your quiz!</Subtitle>
+    <Subtitle>Get answers for your quiz!</Subtitle>
   </header>
 );
